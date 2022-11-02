@@ -14,6 +14,9 @@ A pretty basic notes/reminders management program
 ## Installation
 
 ```console
+# Clone git repo and go into directory
+git clone https://gitlab.com/k_lar/brem; cd brem
+
 # Install
 sudo make install
 
