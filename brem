@@ -1,0 +1,230 @@
+#!/bin/sh
+set -e
+
+##### BREM PATH LOCATION #####
+# If this does not work, you can write the path to brem yourself.
+
+BREM_PATH="$0"
+if [ ! -e "$BREM_PATH" ]; then
+  case $BREM_PATH in
+    (*/*) exit 1;;
+    (*) BREM_PATH=$(command -v -- "$BREM_PATH") || exit;;
+  esac
+fi
+dir=$(
+  cd -P -- "$(dirname -- "$BREM_PATH")" && pwd -P
+) || exit
+BREM_PATH=$dir/$(basename -- "$BREM_PATH") || exit
+
+##### BREM PATH LOCATION #####
+
+CreateSource() {
+    echo "# Entries from bash reminder"
+    echo ""
+}
+
+
+Help() {
+    printf "For this program to work as intended, add this line to the bottom of your .bashrc file:\n"
+    printf "  brem --show\n"
+    printf "Or use the flag --add-to-bashrc to do it for you\n"
+    printf "Usage:\n"
+    printf "  brem                    Creates \$HOME/.config/brem-reminders file\n"
+    printf "  brem -a                 Add an entry inside the reminders file\n"
+    printf "  brem -r [-rn]           Remove an entry inside the reminders file [+renumber]\n"
+    printf "  brem -rn                Renumber entries inside the reminders file\n"
+    printf "  brem -R                 Remove \$HOME/.config/brem-reminders file\n"
+    printf "  brem --show             Prints your reminders to the terminal\n"
+    printf "  brem --add-to-bashrc    Adds reminder autodetection inside .bashrc\n"
+    printf "Usage with rofi:\n"
+    printf "  brem --rofi-menu        Shows all available rofi options in a neat menu\n"
+    printf "  brem --rofi-show        Prints your reminders in a rofi window\n"
+    printf "  brem --rofi-add         Adds entry through rofi\n"
+    printf "  brem --rofi-remove      Remove an entry through a rofi menu\n"
+}
+
+AddReminder() {
+    if ! [ -f "$HOME/.config/brem-reminders" ]; then
+       echo "Reminders file doesn't exist!"
+       echo "Do you want to create it? [Y/n]: "
+       read -r create_choice
+       if ! [ "$create_choice" = "n" ]; then
+           CreateSource >> "$HOME/.config/brem-reminders"
+           chmod +x "$HOME/.config/brem-reminders"
+           printf 'echo \"[1] - %s\"\n' "$reminder" >> "$HOME/.config/brem-reminders"
+       fi
+
+    else
+        echo_num=1
+        while read -r line; do
+            if echo "${line}" | grep -q "echo"; then
+                echo_num=$((echo_num+1))
+            fi
+        done < "$HOME/.config/brem-reminders"
+        printf 'echo \"[%s] - %s\"\n' "$echo_num" "$reminder" >> "$HOME/.config/brem-reminders"
+    fi
+}
+
+RemoveReminder() {
+if [ -f "$HOME/.config/brem-reminders" ]; then
+    sed -i "/echo \"\[$remove_num\] -"/d "$HOME/.config/brem-reminders"
+else
+    echo "Reminders file doesn't exist!"
+fi
+}
+
+
+RofiAdd() {
+    if ! [ -f "$HOME/.config/brem-reminders" ]; then
+        create_choice=$(printf "Yes\nNo" | rofi -dmenu -p "Create reminders file?" -i -mesg "Reminders file does not exist!")
+
+        if ! [ "$create_choice" = "No" ]; then
+            CreateSource >> "$HOME/.config/brem-reminders"
+            chmod +x "$HOME/.config/brem-reminders"
+            reminder=$(sh -c "echo $reminder")
+            printf 'echo \"[1] - %s\"\n' "$reminder" >> "$HOME/.config/brem-reminders"
+        fi
+
+    else
+        echo_num=1
+        while read -r line; do
+            if echo "${line}" | grep -q "echo"; then
+                echo_num=$((echo_num+1))
+            fi
+        done < "$HOME/.config/brem-reminders"
+        reminder=$(sh -c "echo $reminder")
+        printf 'echo \"[%s] - %s\"\n' "$echo_num" "$reminder" >> "$HOME/.config/brem-reminders"
+    fi
+}
+
+Renumber() {
+    echo_num=1
+    line_num=1
+    script_pid="$$"
+    trap 'rm -f "$tmpfile"' EXIT
+    tmpfile=$(mktemp "/tmp/tmp.${script_pid}.XXXXX") || { echo "Failed to create tmp file"; exit 1; }
+    cat "$HOME/.config/brem-reminders" > "$tmpfile"
+
+    while read -r line; do
+        if echo "${line}" | grep -q "echo"; then
+            sed -E -i "${line_num}s/\[([0-9])+\] -/[$echo_num] -/" "$tmpfile"
+
+            echo_num=$((echo_num+1))
+        fi
+    line_num=$((line_num+1))
+    done < "$HOME/.config/brem-reminders"
+    cat "$tmpfile" > "$HOME/.config/brem-reminders"
+    rm "$tmpfile"
+}
+
+RofiMenu() {
+    option1="  Show reminders"
+    option2="+  Add entry"
+    option3="-  Remove entry"
+    option4="#  Renumber"
+    option5="  Exit"
+
+    options="$option1\n$option2\n$option3\n$option4\n$option5"
+
+    choice=$(printf '%b' "$options" | rofi -dmenu -i -no-show-icons -lines 5 -width 30 -p "brem: " -location 0 -yoffset 0 -fixed-num-lines true)
+
+    case "$choice" in
+    	"$option1")
+    		$BREM_PATH --rofi-show ;;
+    	"$option2")
+    		$BREM_PATH --rofi-add ;;
+    	"$option3")
+    		$BREM_PATH --rofi-remove ;;
+    	"$option4")
+    		$BREM_PATH -rn ;;
+    	"$option5")
+    		echo "Exit" ;;
+    esac
+}
+
+case "$1" in
+    "-R"|"--reset")
+        if [ -f "$HOME/.config/brem-reminders" ]; then
+        rm "$HOME/.config/brem-reminders"
+        fi;;
+
+    "-a"|"--add")
+        if ! [ "$2" = "" ]; then
+            reminder="$2"
+            AddReminder
+        else
+            echo "String empty, cannot create reminder."
+        fi;;
+
+    "-r"|"--remove")
+            if ! [ "$2" = "" ]; then
+                remove_num="$2"
+                RemoveReminder
+                if [ "$3" = "-rn" ]; then
+                    Renumber
+                fi
+            else
+                echo "String empty."
+            fi;;
+
+    "-rn"|"--renumber") Renumber;;
+
+    "-h"|"--help") Help;;
+
+    "--add-to-bashrc")
+        echo "THIS WILL MODIFY YOUR .bashrc FILE."
+        echo "This will add reminders autodetection to the bottom of .bashrc"
+        echo "Are you sure this is what you want? [y/N]: "
+        read -r bashrc_choice
+
+        if [ "$bashrc_choice" = "y" ]; then
+        printf "# Initialize bash reminders\nbrem --show" >> "$HOME/.bashrc"
+        echo "Completed successfully"
+        fi;;
+
+    "--show")
+        if [ -f "$HOME/.config/brem-reminders" ]; then
+            echo_num=0
+            while read -r line; do
+                if echo "${line}" | grep -q "echo"; then
+                    echo_num=$((echo_num+1))
+                fi
+            done < "$HOME/.config/brem-reminders"
+
+            # If there aren't any echos in file, dont print banner
+            if ! [ "$echo_num" = 0 ]; then
+                echo "################ Reminders ###############"
+                # This sources $HOME/.config/brem-reminders
+                . "$HOME/.config/brem-reminders"
+                echo "##########################################"
+                echo ""
+            fi
+
+        fi;;
+
+    "--rofi-show") "$HOME/.config/./brem-reminders" | rofi -dmenu -p "Reminders";;
+
+    "--rofi-add")
+        reminder=$(rofi -dmenu -p "Add:" < /dev/null)
+        RofiAdd;;
+
+    "--rofi-remove")
+        remove_num=$("$HOME/.config/./brem-reminders" | rofi -dmenu -p "Remove:")
+        remove_num=${remove_num%%-*}
+        remove_num=$(echo "$remove_num" | grep -o '[0-9]*')
+        RemoveReminder;;
+
+    "--rofi-menu")
+        RofiMenu;;
+
+       *)
+        if ! [ -f "$HOME/.config/brem-reminders" ]; then
+            CreateSource >> "$HOME/.config/brem-reminders"
+            chmod +x "$HOME/.config/brem-reminders"
+            echo "Created reminders file!"
+            echo "To add a reminder, use the -a flag"
+            echo "To remove the file, use the -R flag"
+        else
+            echo 'No argument given. For help using the program, use the flag "-h"'
+        fi;;
+esac
