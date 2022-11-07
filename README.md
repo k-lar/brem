@@ -15,7 +15,7 @@ A pretty basic notes/reminders management program
 
 **AUR package now available! (For Arch Linux)**  
 To install stable release: `yay -S brem`  
-To install stable release: `yay -S brem-git`
+To install development version: `yay -S brem-git`
 
 **To install from source:**
 ```console
