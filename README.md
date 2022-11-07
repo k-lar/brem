@@ -92,6 +92,7 @@ super + u
 ## Dependencies
 
 - [Optional] [rofi](https://github.com/davatorium/rofi)
+- [Optional] [pandoc](https://pandoc.org/) for building manpage from markdown
 
 ## FAQ
 
