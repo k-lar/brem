@@ -40,7 +40,13 @@ run at the end of your .bashrc file or used with the program launcher rofi.
 : prints all reminders on screen
 
 **`--`add-to-bashrc**
-: appends "brem --show" to the end of your .bashrc.
+: DEPRECATED - will be removed in the future.
+Appends "brem `--`show" to the end of your shell's configuration file.
+
+**`--`add-to-sh**
+: appends "brem `--`show" to the end of your shell's configuration file. Current supported shells are
+**bash**, **zsh** and **fish**. You can also specify your own path to the configuration file with an
+absolute path.
 
 To be used with rofi:  
 
