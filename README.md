@@ -43,9 +43,9 @@ brem -r 1
 brem --show
 
 # Show notes/reminders when you open a terminal
-# WARNING: THIS WILL MODIFY YOUR .bashrc FILE.
-# You can do this yourself by appending "brem --show" to the end of .bashrc
-brem --add-to-bashrc
+# WARNING: THIS WILL MODIFY YOUR CONFIGURATION FILE.
+# You can do this yourself by appending "brem --show" to the end of .bashrc|.zshrc etc.
+brem --add-to-sh
 
 # For additional commands
 brem -h
