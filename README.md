@@ -102,6 +102,7 @@ super + u
 
 ## Dependencies
 
+- sed, tr, cat
 - [Optional] [rofi](https://github.com/davatorium/rofi)
 - [Optional] [pandoc](https://pandoc.org/) for building manpage from markdown
     * `make manpage` to generate a new manpage (this is mostly for my own convenience)
