@@ -39,8 +39,14 @@ brem -a "Very important note"
 # This one removes entry [1]
 brem -r 1
 
+# This removes entries [2], [7] and [3]
+brem -r 2,7,3
+
 # Display entries:
 brem --show
+
+# You can chain commands like so:
+brem -r 3,6 -rn -a "Meeting at 12:00" --show
 
 # Show notes/reminders when you open a terminal
 # WARNING: THIS WILL MODIFY YOUR CONFIGURATION FILE.

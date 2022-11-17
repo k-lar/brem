@@ -14,7 +14,7 @@
 . ftr VB CB
 . ftr VBI CBI
 .\}
-.TH "brem" "1" "November 7, 2022" "brem 1.1" "User Manual"
+.TH "brem" "1" "November 18, 2022" "brem 1.2" "User Manual"
 .hy
 .SH NAME
 .PP
@@ -35,15 +35,14 @@ display help message
 \f[B]-a\f[R]
 add an entry inside the reminders file
 .TP
-\f[B]-r\f[R] [\f[I]-rn\f[R]]
-remove an entry inside the reminders file [\f[I]and renumber all other
-entries\f[R]]
+\f[B]-r\f[R]
+remove an entry inside the reminders file
 .TP
 \f[B]-rn\f[R]
 renumber all entries from top to bottom
 .TP
 \f[B]-R\f[R]
-remove the reminders file ($HOME/.config/brem-reminders)
+remove the reminders file (by default: $HOME/.config/brem-reminders)
 .TP
 \f[B]\f[VB]--\f[B]show\f[R]
 prints all reminders on screen
@@ -82,8 +81,15 @@ will add en entry with the content \[lq]Go to the store!\[rq]
 \f[V]brem -r 3\f[R]
 will remove the entry with the number 3
 .TP
+\f[V]brem -r 1,2,3\f[R]
+will remove entries 1,2,3
+.TP
 \f[V]brem --show\f[R]
 will print the contents of $HOME/.config/brem-reminders to the terminal
+.TP
+\f[V]brem -a \[dq]Sell TV\[dq] -r 2 -rn --show\f[R]
+will add an entry, delete the entry [2], renumber everything and print
+it to the terminal
 .PP
 Printed reminders will be in this format:
 .IP

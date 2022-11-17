@@ -2,8 +2,8 @@
 title: brem
 section: 1
 header: User Manual
-footer: brem 1.1
-date: November 7, 2022
+footer: brem 1.2
+date: November 18, 2022
 ---
 
 # NAME
@@ -27,14 +27,14 @@ run at the end of your .bashrc file or used with the program launcher rofi.
 **-a**
 : add an entry inside the reminders file
 
-**-r** [*-rn*]
-: remove an entry inside the reminders file [*and renumber all other entries*]
+**-r**
+: remove an entry inside the reminders file
 
 **-rn**
 : renumber all entries from top to bottom
 
 **-R**
-: remove the reminders file ($HOME/.config/brem-reminders)
+: remove the reminders file (by default: $HOME/.config/brem-reminders)
 
 **`--`show**
 : prints all reminders on screen
@@ -70,8 +70,14 @@ To be used with rofi:
 `brem -r 3`
 : will remove the entry with the number 3
 
+`brem -r 1,2,3`
+: will remove entries 1,2,3
+
 `brem --show`
 : will print the contents of $HOME/.config/brem-reminders to the terminal
+
+`brem -a "Sell TV" -r 2 -rn --show`
+: will add an entry, delete the entry [2], renumber everything and print it to the terminal
 
 Printed reminders will be in this format:  
 ```
