@@ -14,7 +14,7 @@
 . ftr VB CB
 . ftr VBI CBI
 .\}
-.TH "brem" "1" "November 18, 2022" "brem 1.2" "User Manual"
+.TH "brem" "1" "November 20, 2022" "brem 1.3" "User Manual"
 .hy
 .SH NAME
 .PP
@@ -36,7 +36,9 @@ display help message
 add an entry inside the reminders file
 .TP
 \f[B]-r\f[R]
-remove an entry inside the reminders file
+remove an entry inside the reminders file.
+If there are multiple entries with the same number, it will remove the
+first instance.
 .TP
 \f[B]-rn\f[R]
 renumber all entries from top to bottom

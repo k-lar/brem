@@ -2,8 +2,8 @@
 title: brem
 section: 1
 header: User Manual
-footer: brem 1.2
-date: November 18, 2022
+footer: brem 1.3
+date: November 20, 2022
 ---
 
 # NAME
@@ -28,7 +28,8 @@ run at the end of your .bashrc file or used with the program launcher rofi.
 : add an entry inside the reminders file
 
 **-r**
-: remove an entry inside the reminders file
+: remove an entry inside the reminders file. If there are multiple entries with the same number,
+it will remove the first instance.
 
 **-rn**
 : renumber all entries from top to bottom
