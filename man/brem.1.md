@@ -2,7 +2,7 @@
 title: brem
 section: 1
 header: User Manual
-footer: brem 1.3
+footer: brem 1.3.1
 date: November 20, 2022
 ---
 
@@ -48,6 +48,9 @@ Appends "brem `--`show" to the end of your shell's configuration file.
 : appends "brem `--`show" to the end of your shell's configuration file. Current supported shells are
 **bash**, **zsh** and **fish**. You can also specify your own path to the configuration file with an
 absolute path.
+
+**`--`version**
+: prints installed brem version.
 
 To be used with rofi:  
 
