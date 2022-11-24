@@ -7,6 +7,7 @@ A pretty basic notes/reminders management program
 
 - Adding / removing entries
 - Basic renumbering
+- Dynamic border drawing in terminal
 - Integration with rofi
 - Uses another shell script file to store entries with echo
 - Ability to use subshells when adding entries within rofi
