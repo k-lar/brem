@@ -40,10 +40,6 @@ it will remove the first instance.
 **`--`show**
 : prints all reminders on screen
 
-**`--`add-to-bashrc**
-: DEPRECATED - will be removed in the future.
-Appends "brem `--`show" to the end of your shell's configuration file.
-
 **`--`add-to-sh**
 : appends "brem `--`show" to the end of your shell's configuration file. Current supported shells are
 **bash**, **zsh** and **fish**. You can also specify your own path to the configuration file with an

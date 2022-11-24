@@ -86,7 +86,7 @@ DrawFrame() {
 Help() {
     printf "For this program to work as intended, add this line to the bottom of your .bashrc file:\n"
     printf "  brem --show\n"
-    printf "Or use the flag --add-to-bashrc to do it for you\n"
+    printf "Or use the flag --add-to-sh to do it for you\n"
     printf "Usage:\n"
     printf "  brem                    Creates \$HOME/.config/brem-reminders file\n"
     printf "  brem -a                 Add an entry inside the reminders file\n"
@@ -260,7 +260,7 @@ while [ "$#" -gt 0 ]; do
 
         "-h"|"--help") Help;;
 
-        "--add-to-sh"|"--add-to-bashrc") # --add-to-bashrc is deprecated and will be removed in the future
+        "--add-to-sh")
             echo "THIS WILL MODIFY YOUR SHELL'S CONFIG FILE."
             echo "It will append \"brem --show\" to the end of the file"
             echo "Pick a shell:"
