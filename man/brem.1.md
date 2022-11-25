@@ -2,8 +2,8 @@
 title: brem
 section: 1
 header: User Manual
-footer: brem 1.4.0
-date: November 24, 2022
+footer: brem 1.4.1
+date: November 25, 2022
 ---
 
 # NAME
