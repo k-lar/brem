@@ -74,7 +74,7 @@ user@pc:~$ brem --show
 
 This is what you'll see if you append `brem --show` to your .bashrc:  
 
-![brem --show example](/uploads/d59695dc0bedeaf2ecd70c94c6783c89/reminders_example.png)
+![brem --show example](https://gitlab.com/k_lar/brem/uploads/d59695dc0bedeaf2ecd70c94c6783c89/reminders_example.png)
 
 Notes / reminders are stored in a seperate file in `~/.config/brem-reminders`.  
 This file is an **executable shell script** that stores entries in echo statements.  
@@ -89,7 +89,7 @@ echo "[6] - Take out the trash"
 
 ## Rofi
 
-![Rofi menu example cropped](/uploads/bf3d935243a3189d3e95f06da64f9244/brem_rofi_menu_cropped.gif)
+![Rofi menu example cropped](https://gitlab.com/k_lar/brem/uploads/bf3d935243a3189d3e95f06da64f9244/brem_rofi_menu_cropped.gif)
 
 All basic functions of this program are available with rofi commands.  
 I recommend using a keybinding to run brem with the rofi menu option, since it contains all
